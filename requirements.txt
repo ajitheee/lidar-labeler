@@ -1,0 +1,10 @@
+numpy>=1.24
+opencv-python>=4.8
+
+# Dataset access (pick what you need)
+nuscenes-devkit>=1.1.11   # nuScenes loading; not needed for KITTI or the tests
+
+# Inference demo (either one - demo_video.py detects which is installed)
+# inference>=0.9          # local, needs torch; required on a Jetson
+# inference-sdk>=0.9      # hosted API, no torch
+# supervision>=0.18       # tracking and detection utilities

@@ -1,5 +1,8 @@
 # lidar-labeler
 
+[![tests](https://github.com/ajitheee/lidar-labeler/actions/workflows/tests.yml/badge.svg)](https://github.com/ajitheee/lidar-labeler/actions/workflows/tests.yml)
+[![licence: MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
+
 **The point cloud measures what the detector names.** A LiDAR that is already
 on the vehicle auto-labels the camera images, so every 2D box carries a distance
 in metres — with no human annotation anywhere in the pipeline. Then the LiDAR is
@@ -234,11 +237,18 @@ fit_distance.py   fit and score the camera-only model
 demo_video.py     the demo: detection, distance, TTC
 ```
 
-41 tests, none requiring the dataset or the devkit:
+41 tests, none requiring the dataset, the devkit, or a network:
 
 ```bash
-for t in synthetic dataset nuscenes report monocular; do python tests/test_$t.py; done
+pip install pytest && pytest tests/ -v
 ```
+
+They run on every push (Python 3.10 and 3.12). The maths is verified against
+synthetic scenes with known geometry, so a broken projection or a regressed
+reliability gate fails CI rather than silently producing worse labels.
+
+nuScenes is the maintained path; the KITTI entry points (`demo.py`,
+`upload.py`) share the projection and distance code but see less use.
 
 ## Attribution
 

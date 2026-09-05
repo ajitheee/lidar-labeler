@@ -1,0 +1,34 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      # headless OpenCV: CI has no display, and plain opencv-python needs libGL
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy "opencv-python-headless>=4.8" pytest
+
+      # Every suite runs without the dataset or the nuScenes devkit - the maths
+      # is verified against synthetic scenes with known geometry.
+      - name: Run tests
+        run: pytest tests/ -v --tb=short
